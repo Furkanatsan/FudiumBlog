@@ -16,7 +16,7 @@ namespace FudiumBlog.Shared.Data.Abstract
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);//örn:Böyle bir kullanıcı var mı kontrolu
-        Task<int> CountAsync(Expression<Func<T, bool>> predicate);//total kaç makale ver kaç yotum var vs
+        Task<int> CountAsync(Expression<Func<T, bool>> predicate=null);//total kaç makale ver kaç yotum var vs
 
     }
 }

@@ -63,10 +63,10 @@
                                     @category.Description
                                 </td>
                                 <td>
-                                    @category.IsActive
+                                    @(category.IsActive ? "Evet" :"Hayır")
                                 </td>
                                 <td>
-                                    @category.IsDeleted
+                                    @(category.IsDeleted ? "Evet" :"Hayır")
                                 </td>
                                 <td>
                                     @category.Note
@@ -109,7 +109,7 @@
 @section Scripts
 {
 
-    <script src="~/js/categoryIndex.js" type="application/ecmascript"></script>
+    <script src="~/AdminLTE/js/categoryIndex.js" type="application/ecmascript"></script>
     @*categoryIndex.js*@
 
 }

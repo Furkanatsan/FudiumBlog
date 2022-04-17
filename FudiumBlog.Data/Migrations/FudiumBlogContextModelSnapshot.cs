@@ -156,12 +156,12 @@ namespace FudiumBlog.Data.Migrations
                         {
                             Id = 1,
                             CreatedByName = "InitialCreate",
-                            CreatedDate = new DateTime(2022, 4, 17, 0, 46, 51, 244, DateTimeKind.Local).AddTicks(8672),
+                            CreatedDate = new DateTime(2022, 4, 17, 16, 26, 9, 887, DateTimeKind.Local).AddTicks(7780),
                             Description = "C# Programlama Dili ile İlgili En Güncel Bilgiler ",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByName = "InitialCreate",
-                            ModifiedDate = new DateTime(2022, 4, 17, 0, 46, 51, 244, DateTimeKind.Local).AddTicks(9227),
+                            ModifiedDate = new DateTime(2022, 4, 17, 16, 26, 9, 887, DateTimeKind.Local).AddTicks(8341),
                             Name = "C#",
                             Note = "C# Blog Kategorisi"
                         },
@@ -169,12 +169,12 @@ namespace FudiumBlog.Data.Migrations
                         {
                             Id = 2,
                             CreatedByName = "InitialCreate",
-                            CreatedDate = new DateTime(2022, 4, 17, 0, 46, 51, 244, DateTimeKind.Local).AddTicks(9760),
+                            CreatedDate = new DateTime(2022, 4, 17, 16, 26, 9, 887, DateTimeKind.Local).AddTicks(8952),
                             Description = "C++ Programlama Dili ile İlgili En Güncel Bilgiler ",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByName = "InitialCreate",
-                            ModifiedDate = new DateTime(2022, 4, 17, 0, 46, 51, 244, DateTimeKind.Local).AddTicks(9761),
+                            ModifiedDate = new DateTime(2022, 4, 17, 16, 26, 9, 887, DateTimeKind.Local).AddTicks(8954),
                             Name = "C++",
                             Note = "C++ Blog Kategorisi"
                         },
@@ -182,12 +182,12 @@ namespace FudiumBlog.Data.Migrations
                         {
                             Id = 3,
                             CreatedByName = "InitialCreate",
-                            CreatedDate = new DateTime(2022, 4, 17, 0, 46, 51, 244, DateTimeKind.Local).AddTicks(9766),
+                            CreatedDate = new DateTime(2022, 4, 17, 16, 26, 9, 887, DateTimeKind.Local).AddTicks(8958),
                             Description = "JavaScript Programlama Dili ile İlgili En Güncel Bilgiler ",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByName = "InitialCreate",
-                            ModifiedDate = new DateTime(2022, 4, 17, 0, 46, 51, 244, DateTimeKind.Local).AddTicks(9767),
+                            ModifiedDate = new DateTime(2022, 4, 17, 16, 26, 9, 887, DateTimeKind.Local).AddTicks(8960),
                             Name = "JavaScript",
                             Note = "JavaScript Blog Kategorisi"
                         });
@@ -273,14 +273,14 @@ namespace FudiumBlog.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "8faa25c8-345d-4124-9465-77b32784ac28",
+                            ConcurrencyStamp = "2e3bbb66-c8c6-4d02-9c0b-40f169e09003",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "5f3658af-3010-4e4e-88eb-68e0ad694211",
+                            ConcurrencyStamp = "04f381dc-87f2-4da0-87d0-7e1a7aacb317",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         });
@@ -385,17 +385,17 @@ namespace FudiumBlog.Data.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6868542a-8214-4243-8fb3-f8bba22cc801",
+                            ConcurrencyStamp = "9f6e8e96-519a-48a1-98ed-6a5d0e90a8f4",
                             Email = "adminuser@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINUSER@GMAIL.COM",
                             NormalizedUserName = "ADMINUSER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPZvTmPJ76zS811ui4Ae1I0wV2kqQv0Ph29lZ/tCp1fxSf8m8mGKL1RZaIy5EZoAsA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENMcn8qK7E62Pq35jrKigprtLCFqpGIkjMGxVhK1JecezkFy6X6B13xjvGNF49Iv+Q==",
                             PhoneNumber = "+905555555555",
                             PhoneNumberConfirmed = true,
                             Picture = "defaultUser.png",
-                            SecurityStamp = "daa9038e-563b-44de-ad03-ce11cde4698d",
+                            SecurityStamp = "880dab37-77b6-4572-8ee5-7991b8cd5055",
                             TwoFactorEnabled = false,
                             UserName = "adminuser"
                         },
@@ -403,17 +403,17 @@ namespace FudiumBlog.Data.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5c64da4c-8291-4df6-a7f4-a77e409fae8c",
+                            ConcurrencyStamp = "75942779-e12a-40c2-ab35-dbc91e5d2cbb",
                             Email = "editoruser@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "EDITORUSER@GMAIL.COM",
                             NormalizedUserName = "EDITORUSER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDqida438zdXBdcWoSjEoBVk4OFMmGg57mkuZ0QmoDRMs7oOd58SNvCF+ILYx6qNRw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOqr1qBwU4iFi81uUjBSkMqXS+fVH4AmP2nVjDG/hOsJSNnPs36JYLDBUb7JOLqAdw==",
                             PhoneNumber = "+905555555555",
                             PhoneNumberConfirmed = true,
                             Picture = "defaultUser.png",
-                            SecurityStamp = "6a9f3d8f-ef25-41af-8439-30d64089de2c",
+                            SecurityStamp = "81772d8f-69fb-4ab6-9adc-1c69667b8104",
                             TwoFactorEnabled = false,
                             UserName = "editoruser"
                         });

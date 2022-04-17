@@ -4,6 +4,7 @@
             "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+        "order": [[6, "desc"]],/*6.indektekine göre dec olarak sıralar*/
         buttons: [
             {
                 text: 'Ekle',
@@ -35,41 +36,33 @@
                                 let tableBody = "";
                                 $.each(categoryListDto.Categories.$values, function (index, category) {
                                     tableBody += `
-                                                <tr>
+                                                <tr name=${category.Id}>
                                                     <td>
                                                         ${category.Id}
                                                     </td>
                                                     <td>
                                                         ${category.Name}
-
                                                     </td>
                                                     <td>
                                                       ${category.Description}
-
                                                     </td>
                                                     <td>
-                                                      ${convertFirstLetterToUpperCase(category.IsActive.toString())}
-
+                                                      ${category.IsActive ? "Evet" : "Hayır"}
                                                     </td>
                                                     <td>
-                                                       ${convertFirstLetterToUpperCase(category.IsDeleted.toString())}
-
+                                                       ${category.IsDeleted ? "Evet":"Hayır"}
                                                     </td>
                                                     <td>
                                                        ${category.Note}
-
                                                     </td>
                                                     <td>
                                                        ${convertToShortDate(category.CreatedDate)}
-
                                                     </td>
                                                     <td>
                                                        ${convertToShortDate(category.ModifiedDate)}
-
                                                     </td>
                                                     <td>
                                                        ${category.CreatedByName}
-
                                                     </td>
                                                     <td>
                                                        ${category.ModifiedByName}
@@ -389,10 +382,10 @@
                                    ${categoryAddAjaxModel.CategoryDto.Category.Description}
                                 </td>
                                 <td>
-                                   ${convertFirstLetterToUpperCase(categoryAddAjaxModel.CategoryDto.Category.IsActive.toString())}
+                                   ${categoryAddAjaxModel.CategoryDto.Category.IsActive ?"Evet":"Hayır"}
                                 </td>
                                 <td>
-                                   ${convertFirstLetterToUpperCase(categoryAddAjaxModel.CategoryDto.Category.IsDeleted.toString())}
+                                   ${categoryAddAjaxModel.CategoryDto.Category.IsDeleted ? "Evet" : "Hayır"}
                                 </td>
                                 <td>
                                     ${categoryAddAjaxModel.CategoryDto.Category.Note}
@@ -526,10 +519,10 @@
                                    ${categoryUpdateAjaxModel.CategoryDto.Category.Description}
                                 </td>
                                 <td>
-                                   ${convertFirstLetterToUpperCase(categoryUpdateAjaxModel.CategoryDto.Category.IsActive.toString())}
+                                   ${categoryUpdateAjaxModel.CategoryDto.Category.IsActive ? "Evet" : "Hayır"}
                                 </td>
                                 <td>
-                                   ${convertFirstLetterToUpperCase(categoryUpdateAjaxModel.CategoryDto.Category.IsDeleted.toString())}
+                                   ${categoryUpdateAjaxModel.CategoryDto.Category.IsDeleted ? "Evet" : "Hayır"}
                                 </td>
                                 <td>
                                     ${categoryUpdateAjaxModel.CategoryDto.Category.Note}

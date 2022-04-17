@@ -24,7 +24,7 @@ namespace FudiumBlog.Services.Concrete
             _mapper = mapper;
         }
 
-        public async Task<IDataResult<CategoryDto>> Add(CategoryAddDto categoryAddDto, string createdByName)//yeni kategori ekleme
+        public async Task<IDataResult<CategoryDto>> AddAsync(CategoryAddDto categoryAddDto, string createdByName)//yeni kategori ekleme
         {
 
             var category = _mapper.Map<Category>(categoryAddDto);
@@ -57,7 +57,33 @@ namespace FudiumBlog.Services.Concrete
 
         }
 
-        public async Task<IDataResult<CategoryDto>> Delete(int categoryId, string modifiedByName)
+        public async Task<IDataResult<int>> CountAsync()
+        {
+            var categoriesCount = await _unitOfWork.Categories.CountAsync();
+            if (categoriesCount>-1)
+            {
+                return new DataResult<int>(ResultStatus.Success, categoriesCount);
+            }
+            else
+            {
+                return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
+            }
+        }
+
+        public async Task<IDataResult<int>> CountByNonDeletedAsync()//silinmemiş olanların sayısı
+        {
+            var categoriesCount = await _unitOfWork.Categories.CountAsync(c=>!c.IsDeleted);
+            if (categoriesCount > -1)
+            {
+                return new DataResult<int>(ResultStatus.Success, categoriesCount);
+            }
+            else
+            {
+                return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
+            }
+        }
+
+        public async Task<IDataResult<CategoryDto>> DeleteAsync(int categoryId, string modifiedByName)
         {
             var category = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryId);
             if (category!=null)
@@ -82,9 +108,9 @@ namespace FudiumBlog.Services.Concrete
             });
         }
 
-        public async Task<IDataResult<CategoryDto>> Get(int categoryId)
+        public async Task<IDataResult<CategoryDto>> GetAsync(int categoryId)
         {
-            var category = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryId, c => c.Articles);//id ye göre kategorileri getiricek
+            var category = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryId);//id ye göre kategorileri getiricek
 
             if (category!=null)
             {
@@ -101,9 +127,9 @@ namespace FudiumBlog.Services.Concrete
             });;
         }
 
-        public async Task<IDataResult<CategoryListDto>> GetAll()
+        public async Task<IDataResult<CategoryListDto>> GetAllAsync()
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync(null, c => c.Articles);//tüm kategorileri getiricek
+            var categories = await _unitOfWork.Categories.GetAllAsync(null);//tüm kategorileri getiricek
             if (categories.Count>-1)//0 kategori olabilir
             {
                 return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto 
@@ -120,9 +146,9 @@ namespace FudiumBlog.Services.Concrete
             });
         }
 
-        public async Task<IDataResult<CategoryListDto>> GetAllByNonDeleted()
+        public async Task<IDataResult<CategoryListDto>> GetAllByNonDeletedAsync()
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync(c => c.IsDeleted == false,c=>c.Articles);//silinmemiş olanları getiricek
+            var categories = await _unitOfWork.Categories.GetAllAsync(c => c.IsDeleted == false);//silinmemiş olanları getiricek
             if (categories.Count > -1)//0 kategori olabilir
             {
                 return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
@@ -140,9 +166,9 @@ namespace FudiumBlog.Services.Concrete
             });
         }
 
-        public async Task<IDataResult<CategoryListDto>> GetAllByNonDeletedAndActive()
+        public async Task<IDataResult<CategoryListDto>> GetAllByNonDeletedAndActiveAsync()
         {
-            var categories = await _unitOfWork.Categories.GetAllAsync(c =>!c.IsDeleted&&c.IsActive, c => c.Articles);//silinmemiş ve aktif olanları getiricek
+            var categories = await _unitOfWork.Categories.GetAllAsync(c =>!c.IsDeleted&&c.IsActive);//silinmemiş ve aktif olanları getiricek
             if (categories.Count > -1)
             {
                 return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
@@ -155,7 +181,7 @@ namespace FudiumBlog.Services.Concrete
 
         }
 
-        public async Task<IDataResult<CategoryUpdateDto>> GetCategoryUpdateDto(int categoryId)
+        public async Task<IDataResult<CategoryUpdateDto>> GetCategoryUpdateDtoAsync(int categoryId)
         {
             var result = await _unitOfWork.Categories.AnyAsync(c => c.Id == categoryId);
             if (result)
@@ -170,7 +196,7 @@ namespace FudiumBlog.Services.Concrete
             }
         }
 
-        public async Task<IResult> HardDelete(int categoryId)//silme işlemi
+        public async Task<IResult> HardDeleteAsync(int categoryId)//silme işlemi
         {
             var category = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryId);
             if (category != null)
@@ -182,7 +208,7 @@ namespace FudiumBlog.Services.Concrete
             return new Result(ResultStatus.Error, "Böyle bir kategori bulunamadı.");
         }
 
-        public async Task<IDataResult<CategoryDto>> Update(CategoryUpdateDto categoryUpdateDto, string modifiedByName)//update işlemi
+        public async Task<IDataResult<CategoryDto>> UpdateAsync(CategoryUpdateDto categoryUpdateDto, string modifiedByName)//update işlemi
         {
             var oldCategory = await _unitOfWork.Categories.GetAsync(c => c.Id == categoryUpdateDto.Id);
             var category = _mapper.Map<CategoryUpdateDto,Category>(categoryUpdateDto,oldCategory);//Dto Da olmayan değerleri de almış olacağız.

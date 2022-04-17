@@ -463,8 +463,10 @@
                 success: function (data) {
                     const userUpdateAjaxModel = jQuery.parseJSON(data);
                     console.log(userUpdateAjaxModel);
-                    const id = userUpdateAjaxModel.UserDto.User.Id;
-                    const tableRow = $(`[name="${id}"]`);//bu id ye sahip name attr olan tableRowu seçtik
+                    if (userUpdateAjaxModel.UserDto!=null) {
+                        const id = userUpdateAjaxModel.UserDto.User.Id;
+                        const tableRow = $(`[name="${id}"]`);//bu id ye sahip name attr olan tableRowu seçtik
+                    }
                     const newFormBody = $('.modal-body', userUpdateAjaxModel.UserUpdatePartial);
                     placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
                     const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';

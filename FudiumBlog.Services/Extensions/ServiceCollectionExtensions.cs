@@ -4,6 +4,7 @@ using FudiumBlog.Data.Concrete.EntityFramework.Contexts;
 using FudiumBlog.Entities.Concrete;
 using FudiumBlog.Services.Abstract;
 using FudiumBlog.Services.Concrete;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,9 @@ namespace FudiumBlog.Services.Extensions
     //yani services katmanı bilgileri data katmanından alır kendi içinde işler vemvc katmanına taşır.
     public static class ServiceCollectionExtensions//static olmalı
     {
-        public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection)
+        public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection,string connectionString)
         {
-            serviceCollection.AddDbContext<FudiumBlogContext>();//db contextimizi kaydettik
+            serviceCollection.AddDbContext<FudiumBlogContext>(options=>options.UseSqlServer(connectionString));//db contextimizi kaydettik
             serviceCollection.AddIdentity<User,Role>(options=> 
             {
                 //password options
@@ -38,6 +39,7 @@ namespace FudiumBlog.Services.Extensions
             serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();//eger biri senden ıunitofwork isterse unitofwork ver.Yapılan her requestte nesne tekrar oluşur.
             serviceCollection.AddScoped<ICategoryService, CategoryManager>();//eger biri senden ıcategoryservice  isterse categorymanager ver.
             serviceCollection.AddScoped<IArticleService, ArticleManager>();//eger biri senden ıArticleservice isterse artivlemanager ver.
+            serviceCollection.AddScoped<ICommentService, CommentManager>();
             return serviceCollection;
         } 
     }

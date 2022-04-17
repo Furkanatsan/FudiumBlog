@@ -83,6 +83,14 @@ namespace FudiumBlog.Mvc.Areas.Admin.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home", new { Area = "" });//kullanıcı çıkış yapınca blog sayfa ındexine yönlendirilir
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<JsonResult> GetAllUsers()
@@ -258,6 +266,121 @@ namespace FudiumBlog.Mvc.Areas.Admin.Controllers
                 return Json(userUpdateModelStateErrorViewModal);
 
             }
+        }
+
+        //kullanıcı bilgilerinin güncellenmesi ayarlanması
+        [Authorize]
+        [HttpGet]
+        public async Task<ViewResult> ChangeDetails()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);//şu anki kullanıcının bilgileri
+            var updateDto = _mapper.Map<UserUpdateDto>(user);//useri userupdatedtoya ceviriyoruz
+            return View(updateDto);
+
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<ViewResult> ChangeDetails(UserUpdateDto userUpdateDto)
+        {
+            if (ModelState.IsValid)
+            {
+                bool isNewPictureUploaded = false;
+                var oldUser = await _userManager.GetUserAsync(HttpContext.User);
+                var oldUserPicture = oldUser.Picture;
+                if (userUpdateDto.PictureFile != null)
+                {
+                    userUpdateDto.Picture = await ImageUpload(userUpdateDto.UserName, userUpdateDto.PictureFile);
+                    if (oldUserPicture!="defaultUser.png")
+                    {
+                    isNewPictureUploaded = true;
+
+                    }
+
+                }
+                var updatedUser = _mapper.Map<UserUpdateDto, User>(userUpdateDto, oldUser);
+                var result = await _userManager.UpdateAsync(updatedUser);
+                if (result.Succeeded)
+                {
+                    if (isNewPictureUploaded == true)//yeni bir resim eklendi mi
+                    {
+                        ImageDelete(oldUserPicture);
+                    }
+                    TempData.Add("SuccessMessage", $"{updatedUser.UserName} adlı kullanıcı başarıyla güncellenmiştir.");
+                    return View(userUpdateDto);
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View(userUpdateDto);
+                }
+
+
+            }
+            else
+            {
+                return View(userUpdateDto);
+
+            }
+
+        }
+        [Authorize]
+        [HttpGet]
+        public ViewResult PasswordChange()
+        {
+            return View();
+
+        }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> PasswordChange(UserPasswordChangeDto userPasswordChangeDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                var isVerified = await _userManager.CheckPasswordAsync(user, userPasswordChangeDto.CurrentPassword);
+                if (isVerified)
+                {
+                    var result = await _userManager.ChangePasswordAsync(user, userPasswordChangeDto.CurrentPassword, userPasswordChangeDto.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        await _userManager.UpdateSecurityStampAsync(user);//kullanıcının yakın zamanda önemli bir bilgi güncellediğini bilmek ister.
+                        await _signInManager.SignOutAsync();//kullanıcıya çıkış yaptırılır.
+                        await _signInManager.PasswordSignInAsync(user, userPasswordChangeDto.NewPassword, true, false);
+                        TempData.Add("SuccessMessage", $"Şifreniz başarıyla güncellenmiştir.");
+                        return View();
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                        return View(userPasswordChangeDto);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Lütfen Girmiş olduğunuz şifrenizi kontrol ediniz.");
+                    return View(userPasswordChangeDto);
+                }
+            }
+            else
+            {
+                return View(userPasswordChangeDto);
+            }
+            
+        }
+
+
+
+        [HttpGet]//Yetkisiz istek
+        public ViewResult AccessDenied()
+        {
+            return View();
         }
 
 

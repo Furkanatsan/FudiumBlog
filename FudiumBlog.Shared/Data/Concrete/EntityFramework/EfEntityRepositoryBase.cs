@@ -12,7 +12,7 @@ namespace FudiumBlog.Shared.Data.Concrete.EntityFramework
 {
     public class EfEntityRepositoryBase<TEntity> : IEntityRepository<TEntity> where TEntity : class, IEntity, new()//IEntityRepository implement edildi ve içindeki metodlar buraya geldi
     {
-        private readonly DbContext _context;
+        protected readonly DbContext _context;
         public EfEntityRepositoryBase(DbContext context)
         {
             _context = context;
@@ -28,9 +28,9 @@ namespace FudiumBlog.Shared.Data.Concrete.EntityFramework
             return await _context.Set<TEntity>().AnyAsync(predicate);
         }
 
-        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate=null)
         {
-            return await _context.Set<TEntity>().CountAsync(predicate);
+            return await (predicate==null ? _context.Set<TEntity>().CountAsync(): _context.Set<TEntity>().CountAsync(predicate));
         }
 
         public async Task DeleteAsync(TEntity entity)
@@ -60,11 +60,8 @@ namespace FudiumBlog.Shared.Data.Concrete.EntityFramework
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>();//burdaki işlemleri include propertyde de kullancağımız için oluşturduk
-            if (predicate != null)//filtre null değilse
-            {
                 query = query.Where(predicate);
 
-            }
             if (includeProperties.Any())//bu dizinin içinde herhangi bir değer var mı rgrt varsa querye includelari ekliyoruz
             {
                 foreach (var includeProperty in includeProperties)
